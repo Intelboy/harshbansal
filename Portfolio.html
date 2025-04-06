@@ -1,0 +1,677 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.65">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">import React, { useState, useEffect } from 'react';</span></p>
+<p class="p1"><span class="s1">import {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>AppBar, Toolbar, Typography, Container, Grid, Box, Link, IconButton,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>Card, CardContent, Chip, Avatar, List, ListItem, ListItemIcon, ListItemText,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>ThemeProvider, createTheme, CssBaseline, Fade, Slide, Grow, Paper, Divider // Added Divider</span></p>
+<p class="p1"><span class="s1">} from '@mui/material';</span></p>
+<p class="p1"><span class="s1">import {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>Email, Phone, LinkedIn, School, Work, Code, Memory, Storage, Build, Article, MilitaryTech, LocationOn, AccountCircle,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>Language, // Added Icon for Languages</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>AccountTree, // Added Icon for Projects</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>RecordVoiceOver, // Added Icon for Trainings Delivered</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>EmojiEvents, // Added Icon for Achievements</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>DateRange // Added Icon for dates/years</span></p>
+<p class="p1"><span class="s1">} from '@mui/icons-material';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// --- Theme Configuration ---</span></p>
+<p class="p1"><span class="s1">// Define a theme for consistent styling (same as before)</span></p>
+<p class="p1"><span class="s1">const theme = createTheme({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>palette: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>primary: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>main: '#1976d2', // Professional blue</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>secondary: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>main: '#dc004e', // Contrasting pink/red</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>default: '#f4f6f8', // Light grey background</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>paper: '#ffffff', // White for cards/paper elements</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>typography: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>h4: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>fontWeight: 600,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>h5: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>fontWeight: 500,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>h6: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>fontWeight: 500,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>components: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>MuiCard: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>styleOverrides: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>root: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>borderRadius: '12px', // Rounded corners for cards</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>boxShadow: '0 4px 12px rgba(0,0,0,0.08)', // Softer shadow</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>'&amp;:hover': {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: 'translateY(-5px)',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>boxShadow: '0 8px 20px rgba(0,0,0,0.12)',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>MuiChip: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>styleOverrides: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>root: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>margin: '4px',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fontWeight: 500,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>MuiIconButton: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>styleOverrides: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>root: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Keeping default color for header icons, footer icons styled separately</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'&amp;:hover': {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>backgroundColor: 'rgba(25, 118, 210, 0.08)', // Light blue background on hover for primary icons</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>},</span></p>
+<p class="p1"><span class="s1">});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// --- Data (Extracted from Resume - Merged) ---</span></p>
+<p class="p1"><span class="s1">const portfolioData = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>name: "Harsh Bansal",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>title: "Trainer | RPA Developer",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>profilePicUrl: "https://placehold.co/150x150/EFEFEF/AAAAAA?text=HB", // Placeholder image</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>summary: "10+ years of experience in teaching and training in collaboration with the IT industry. Technologically savvy and goal-oriented. Extensive experience in programming and as a Robotic Process Automation developer on Blue Prism and Automation Anywhere.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>contact: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>email: "harshbansal@live.com",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>phone: "+91-8283058300",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>location: "Udaipur, Rajasthan, India",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>linkedin: "https://linkedin.com/in/harshbansallive",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>languages: [ // New Section Data</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "English", proficiency: "Professional Working Proficiency", icon: &lt;Language /&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Hindi", proficiency: "Professional Working Proficiency", icon: &lt;Language /&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Punjabi", proficiency: "Professional Working Proficiency", icon: &lt;Language /&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>education: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>degree: "Ph.D. Pursuing - CSE",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>institution: "Chandigarh University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>years: "Ongoing",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>degree: "B.Tech (Hons.) M.Tech (Integrated) CSE",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>institution: "Lovely Professional University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>years: "Completed",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>details: "Thesis/Focus: Intelligent Methods for Resource Allocation in Grid Computing"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>skills: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Robotic Process Automation (RPA)", icon: &lt;Build /&gt;, details: ["Blue Prism", "Automation Anywhere", "UiPath (Training)"] },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Programming Languages", icon: &lt;Code /&gt;, details: ["Python", "Java", "C", "C++"] },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Database Management &amp; Administration", icon: &lt;Storage /&gt;, details: ["SQL", "DBMS Concepts", "Database Security", "Oracle DB"] },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Core CS Concepts", icon: &lt;Memory /&gt;, details: ["Data Structures", "Algorithms", "Machine Learning", "AI (Training)", "Computer Vision (Training)"] },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Cloud/Other", icon: &lt;Article /&gt;, details: ["Grid Computing", "Blockchain Basics (Coursera)", "Smart Contracts (Coursera)"] },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>experience: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">     </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>role: "Assistant Professor",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>company: "SPSU, Udaipur",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>years: "Present",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>tasks: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Executing bootcamps on programming.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Teaching programming languages and machine learning.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>role: "Assistant Professor",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>company: "Chandigarh University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>years: "Previous Role",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>tasks: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Established Bot Lab in collaboration with Automation Anywhere and Virtusa.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"SPOC for training and learning Robotic Process Automation.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Taught programming languages: C, C++, Python, and Java.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Trained students in DBMS and Administration, Data Structures and Algorithms.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Designed and Implemented Coding Bootcamp (2020-2021) in collaboration with IBM.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>role: "Assistant Professor",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>company: "Lovely Professional University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>years: "Previous Role",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>tasks: [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Imparted ELITE Industrial Training Program to students in collaboration with Tech Mahindra.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Master course coordinator for Database Management System.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>"Course coordinator for Database Security and Database Administration.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>projects: [ // New Section Data</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>title: "RPA for Student Mentoring",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>description: "Downloads reports from university ERP, identifies students with &lt;75% attendance fortnightly, and notifies parents.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>icon: &lt;Build color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>title: "RPA for Student Categorization",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>description: "Categorizes students based on exam performance (slow, fast, average, detained, absent) for corrective actions.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>icon: &lt;Build color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">     </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>title: "RPA for Order Placement",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>description: "Utilizes Blue Prism Data Centric Solutions. Reads data from Excel into work queues and processes items to create orders.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>icon: &lt;Build color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">     </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>title: "RPA for Certificate Generation",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>description: "Automates the generation of certificates for event participants and mails them to recipients.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>icon: &lt;Build color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>trainingsAttended: [ // Renamed from 'trainings'</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"RPA Design and Development v3.0 - Educator Readiness Program by UiPath (08/2021)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Summer School on Artificial Intelligence at IIIT Hyderabad (08/2021)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Train the Trainer Program on Robotic Process Automation - Automation Anywhere, Bangalore (09/2019)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Summer School on Computer Vision at IIIT Hyderabad (07/2019)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Faculty Development Program on Data Science by IBM (07/2018)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"4 weeks Technology Orientation for Faculty program on RPA field at Virtusa Hyderabad (2018)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Train the Trainer Program for Technical Learning Services at Tech Mahindra Chandigarh (12/2015)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Introduction to Oracle 9i: SQL by ORACLE",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>"Oracle Database 10g: Administration Workshop 1 by Oracle",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>trainingsDelivered: [ // New Section Data</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>topic: "Automation Anywhere Training for Virtusa",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>duration: "2 Batches (2 Years)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>outcome: "Covered Essential &amp; Advanced Certification syllabus.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;RecordVoiceOver color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>topic: "Blue Prism Training for Virtusa",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>duration: "2 Batches (2 Years)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>outcome: "Covered Blue Prism Developer Certification syllabus.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;RecordVoiceOver color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>topic: "RPA Workshop (Automation Anywhere)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>duration: "University Tech-Fest",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>outcome: "Conducted in collaboration with Automation Anywhere.",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;RecordVoiceOver color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>certifications: [ // Added new certifications</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Automation Anywhere Certified Advanced RPA Professional V10.0", id: "ID: AAADVC31833514", icon: &lt;Build color="primary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Blue Prism Certified Developer", id: "ID: 803093253", icon: &lt;Build color="primary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "EMC Academic Associate, Information Storage and Management", id: "EAA-001, Reg No: 02999108040704", icon: &lt;Storage color="primary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Introduction to Oracle SQL (Test 120-007)", id: "Score: 94%, Oracle Testing ID: OC0883354", icon: &lt;Code color="primary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Blockchain Basics &amp; Smart Contracts (Coursera)", id: "University at Buffalo &amp; SUNY (04/2022)", icon: &lt;Article color="secondary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Neural Networks and Deep Learning (Coursera)", id: "Taught by Andrew Ng (06/2020)", icon: &lt;Memory color="secondary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>{ name: "Python for Data Science and Machine Learning Bootcamp (Udemy)", id: "Taught by Jose Portilla (05/2020)", icon: &lt;Code color="secondary"/&gt; },</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>publications: {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>international: 3,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>national: 2</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>achievements: [ // New Section Data</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>title: "Best Team Player in Administrative Role",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>org: "Teacher's Day - 2022, Chandigarh University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>date: "09/2022",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;EmojiEvents color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>title: "Best Performer in Pre-Earned Credit Program",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>org: "Teacher's Day - 2021, Chandigarh University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>date: "09/2021",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;EmojiEvents color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>title: "Tesla Award for Best Digital Innovation in Teaching",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>org: "Engineering Cluster, Teacher's Day - 2021, Chandigarh University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>date: "09/2021",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;EmojiEvents color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>title: "Teacher Appreciation Award (Best Faculty)",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>org: "CSE Discipline, Lovely Professional University",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>date: "09/2015",</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>icon: &lt;EmojiEvents color="primary"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>]</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// --- Helper Components ---</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Simple FadeIn component using MUI's Fade</span></p>
+<p class="p1"><span class="s1">const FadeIn = ({ children, delay = 0 }) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const [isIn, setIsIn] = useState(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>useEffect(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const timer = setTimeout(() =&gt; setIsIn(true), delay);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return () =&gt; clearTimeout(timer);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}, [delay]);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Ensure children is a valid React element before cloning</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (!React.isValidElement(children)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return &lt;Fade in={isIn} timeout={800}&gt;{children}&lt;/Fade&gt;;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Use Fade directly wrapping the children</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return &lt;Fade in={isIn} timeout={800}&gt;{children}&lt;/Fade&gt;;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Section Component for consistent padding and title</span></p>
+<p class="p1"><span class="s1">const Section = ({ title, children, id }) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;Box sx={{ py: 6 }} id={id}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Container maxWidth="lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;FadeIn delay={100}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Typography variant="h4" component="h2" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold', color: 'primary.main' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{title}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{children}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Container&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// --- Main Sections ---</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Hero Section (No Changes)</span></p>
+<p class="p1"><span class="s1">const HeroSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', py: 8, textAlign: 'center' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Container maxWidth="md"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;Grow in={true} timeout={500}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Avatar</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>alt={portfolioData.name}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>src={portfolioData.profilePicUrl}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>sx={{ width: 150, height: 150, margin: '0 auto 20px', border: '4px solid white' }}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/Grow&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;FadeIn delay={200}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{portfolioData.name}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;FadeIn delay={400}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Typography variant="h5" component="p" gutterBottom sx={{ mb: 3 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{portfolioData.title}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;FadeIn delay={600}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Typography variant="body1" component="p" sx={{ mb: 4, maxWidth: '700px', margin: '0 auto 24px auto' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{portfolioData.summary}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;FadeIn delay={800}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;IconButton href={`mailto:${portfolioData.contact.email}`} target="_blank" sx={{ color: 'white', '&amp;:hover': { bgcolor: 'rgba(255,255,255,0.2)'} }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Email /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/IconButton&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;IconButton href={`tel:${portfolioData.contact.phone}`} target="_blank" sx={{ color: 'white', '&amp;:hover': { bgcolor: 'rgba(255,255,255,0.2)'} }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Phone /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/IconButton&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;IconButton href={portfolioData.contact.linkedin} target="_blank" sx={{ color: 'white', '&amp;:hover': { bgcolor: 'rgba(255,255,255,0.2)'} }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;LinkedIn /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/IconButton&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">           </span>&lt;Chip</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>icon={&lt;LocationOn /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>label={portfolioData.contact.location}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>variant="outlined"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>sx={{ color: 'white', borderColor: 'white', ml: 2, cursor: 'default', verticalAlign: 'middle' }}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Container&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Skills Section (No Changes)</span></p>
+<p class="p1"><span class="s1">const SkillsSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;Section title="Skills" id="skills"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Grid container spacing={4}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{portfolioData.skills.map((skill, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Grid item xs={12} sm={6} md={4} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">           </span>&lt;Slide direction="up" in={true} mountOnEnter unmountOnExit timeout={500 + index * 100}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">               </span>&lt;CardContent sx={{ flexGrow: 1 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                   </span>&lt;Avatar sx={{ bgcolor: 'primary.light', mr: 2 }}&gt;{skill.icon}&lt;/Avatar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                   </span>&lt;Typography variant="h6" component="h3"&gt;{skill.name}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                   </span>{skill.details.map((detail, i) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>&lt;Chip label={detail} key={i} variant="outlined" size="small" sx={{ mr: 0.5, mb: 0.5 }}/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                   </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">               </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">           </span>&lt;/Slide&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Languages Section (New)</span></p>
+<p class="p1"><span class="s1">const LanguagesSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="Languages" id="languages"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;FadeIn delay={200}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Paper elevation={2} sx={{ p: 3, borderRadius: '12px' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;Grid container spacing={2} justifyContent="center" textAlign="center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{portfolioData.languages.map((lang, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;Grid item xs={12} sm={4} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;Grow in={true} timeout={500 + index * 150}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                 </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                     </span>&lt;Avatar sx={{ bgcolor: 'secondary.light', margin: '0 auto 8px' }}&gt;{lang.icon}&lt;/Avatar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                     </span>&lt;Typography variant="h6"&gt;{lang.name}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                     </span>&lt;Typography variant="body2" color="text.secondary"&gt;{lang.proficiency}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                 </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;/Grow&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;/Paper&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Experience Section (No Changes)</span></p>
+<p class="p1"><span class="s1">const ExperienceSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;Section title="Work Experience" id="experience"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Grid container spacing={4}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{portfolioData.experience.map((job, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Grid item xs={12} md={6} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Slide direction={index % 2 === 0 ? "right" : "left"} in={true} mountOnEnter unmountOnExit timeout={500 + index * 100}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;Card sx={{ height: '100%' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                          </span>&lt;Typography variant="h6" component="h3" gutterBottom&gt;{job.role}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                          </span>&lt;Typography variant="subtitle1" color="text.secondary"&gt;{job.company}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>&lt;Chip label={job.years} color="primary" variant="outlined" size="small"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;List dense&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{job.tasks.map((task, i) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>&lt;ListItem key={i} sx={{ py: 0.5, alignItems: 'flex-start' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ListItemIcon sx={{ minWidth: '30px', mt: '4px' }}&gt;&lt;Build fontSize="small" color="action"/&gt;&lt;/ListItemIcon&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;ListItemText primary={task} primaryTypographyProps={{ variant: 'body2' }} /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>&lt;/ListItem&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                  </span>&lt;/List&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/Slide&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Projects Section (New)</span></p>
+<p class="p1"><span class="s1">const ProjectsSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="RPA Projects" id="projects"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Grid container spacing={4}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{portfolioData.projects.map((project, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;Grid item xs={12} sm={6} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;Slide direction="up" in={true} mountOnEnter unmountOnExit timeout={500 + index * 100}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;Card sx={{ height: '100%' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;Avatar sx={{ bgcolor: 'primary.light', mr: 2 }}&gt;{project.icon}&lt;/Avatar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;Typography variant="h6" component="h3"&gt;{project.title}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Typography variant="body2" color="text.secondary"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{project.description}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/Slide&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Education Section (No Changes)</span></p>
+<p class="p1"><span class="s1">const EducationSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;Section title="Education" id="education"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">     </span>&lt;Grid container spacing={4} justifyContent="center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">       </span>{portfolioData.education.map((edu, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">         </span>&lt;Grid item xs={12} sm={6} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Grow in={true} mountOnEnter unmountOnExit timeout={500 + index * 150}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;Card sx={{ height: '100%' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;Avatar sx={{ bgcolor: 'secondary.light', mr: 2 }}&gt;&lt;School /&gt;&lt;/Avatar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                           </span>&lt;Typography variant="h6" component="h3"&gt;{edu.degree}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                           </span>&lt;Typography variant="subtitle1" color="text.secondary"&gt;{edu.institution}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                   </span>&lt;Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}&gt;Years: {edu.years}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                   </span>{edu.details &amp;&amp; &lt;Typography variant="body2"&gt;&lt;i&gt;{edu.details}&lt;/i&gt;&lt;/Typography&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/Grow&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">         </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">       </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">     </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Certifications Section (Updated Data)</span></p>
+<p class="p1"><span class="s1">const CertificationsSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="Certifications" id="certifications"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Grid container spacing={3}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{portfolioData.certifications.map((cert, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;Grid item xs={12} sm={6} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;FadeIn delay={index * 100}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;Paper elevation={2} sx={{ p: 2, display: 'flex', alignItems: 'center', borderRadius: '8px', height: '100%' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;ListItemIcon sx={{ minWidth: '40px', mr: 1 }}&gt;{cert.icon}&lt;/ListItemIcon&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;ListItemText</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>primary={cert.name}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>secondary={cert.id}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>primaryTypographyProps={{ fontWeight: 'medium', variant: 'body1' }}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>secondaryTypographyProps={{ variant: 'body2' }}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/Paper&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Trainings Attended Section (Renamed)</span></p>
+<p class="p1"><span class="s1">const TrainingsAttendedSection = () =&gt; ( // Renamed Component</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="Trainings Attended &amp; Workshops" id="trainings-attended"&gt; {/* Updated ID */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;FadeIn delay={300}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;List dense&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>{portfolioData.trainingsAttended.map((training, index) =&gt; ( // Updated data source</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;ListItem key={index} sx={{ py: 0.5, alignItems: 'flex-start' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;ListItemIcon sx={{ minWidth: '30px', mt: '4px' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;School fontSize="small" color="action" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/ListItemIcon&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;ListItemText primary={training} primaryTypographyProps={{ variant: 'body2' }}/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/ListItem&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/List&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Trainings Delivered Section (New)</span></p>
+<p class="p1"><span class="s1">const TrainingsDeliveredSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="RPA Trainings Delivered" id="trainings-delivered"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Grid container spacing={4}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{portfolioData.trainingsDelivered.map((training, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;Grid item xs={12} md={4} key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;Slide direction="up" in={true} mountOnEnter unmountOnExit timeout={500 + index * 100}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;Card sx={{ height: '100%', textAlign: 'center' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Avatar sx={{ bgcolor: 'primary.light', margin: '0 auto 16px' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{training.icon}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/Avatar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Typography variant="h6" component="h3" gutterBottom&gt;{training.topic}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Chip icon={&lt;DateRange /&gt;} label={training.duration} size="small" sx={{ mb: 1 }}/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Typography variant="body2" color="text.secondary"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{training.outcome}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/Slide&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Grid&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Publications Section (No Changes)</span></p>
+<p class="p1"><span class="s1">const PublicationsSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="Publications" id="publications"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;FadeIn delay={200}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Paper elevation={3} sx={{ p: 3, textAlign: 'center', borderRadius: '12px', background: 'linear-gradient(135deg, #e3f2fd, #bbdefb)' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}&gt;Research Contributions&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;Divider sx={{ my: 2 }}/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: 2, mt: 2 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;Typography variant="h3" color="primary" sx={{ fontWeight: 'bold' }}&gt;{portfolioData.publications.international}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;Typography variant="body1" color="text.secondary"&gt;International Journals&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>&lt;Divider orientation="vertical" flexItem /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>&lt;Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;Typography variant="h3" color="secondary" sx={{ fontWeight: 'bold' }}&gt;{portfolioData.publications.national}&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;Typography variant="body1" color="text.secondary"&gt;National Journals&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                     </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                 </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/Paper&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Achievements Section (New)</span></p>
+<p class="p1"><span class="s1">const AchievementsSection = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Section title="Achievements" id="achievements"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;FadeIn delay={300}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;List&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>{portfolioData.achievements.map((achievement, index) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;React.Fragment key={index}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;ListItem sx={{ py: 1.5, alignItems: 'flex-start' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;ListItemIcon sx={{ minWidth: '40px', mt: '4px' }}&gt;{achievement.icon}&lt;/ListItemIcon&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;ListItemText</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>primary={achievement.title}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>secondary={`${achievement.org} (${achievement.date})`}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>primaryTypographyProps={{ fontWeight: 'medium' }}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/ListItem&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>{index &lt; portfolioData.achievements.length - 1 &amp;&amp; &lt;Divider component="li" variant="inset" /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/React.Fragment&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/List&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/CardContent&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/Card&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/FadeIn&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Section&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// Footer Section (No Changes)</span></p>
+<p class="p1"><span class="s1">const Footer = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;Box component="footer" sx={{ bgcolor: 'grey.900', color: 'grey.400', py: 4, mt: 8 }}&gt; {/* Increased top margin */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;Container maxWidth="lg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;Typography variant="body2" align="center" gutterBottom&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>Connect with Harsh Bansal:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">         </span>&lt;IconButton href={`mailto:${portfolioData.contact.email}`} target="_blank" sx={{ color: 'grey.400', '&amp;:hover': { color: 'white'} }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Email /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/IconButton&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;IconButton href={`tel:${portfolioData.contact.phone}`} target="_blank" sx={{ color: 'grey.400', '&amp;:hover': { color: 'white'} }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;Phone /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/IconButton&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;IconButton href={portfolioData.contact.linkedin} target="_blank" sx={{ color: 'grey.400', '&amp;:hover': { color: 'white'} }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;LinkedIn /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/IconButton&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;Typography variant="body2" align="center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&amp;copy; {new Date().getFullYear()} Harsh Bansal. All rights reserved.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">       </span>&lt;Typography variant="caption" display="block" align="center" sx={{ mt: 1 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">         </span>Location: {portfolioData.contact.location}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/Container&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1">);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// --- App Component (Updated Navigation and Section Order) ---</span></p>
+<p class="p1"><span class="s1">function App() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>return (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;ThemeProvider theme={theme}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;CssBaseline /&gt; {/* Ensures consistent baseline styling */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;AppBar position="sticky" sx={{ bgcolor: 'white', color: 'primary.main', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;Toolbar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;Avatar sx={{ bgcolor: 'primary.main', mr: 1.5 }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;AccountCircle /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/Avatar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{portfolioData.name} - Portfolio</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/Typography&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>{/* Updated Navigation Links */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;Box sx={{ display: { xs: 'none', sm: 'block' } }}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Link href="#skills" color="inherit" sx={{ ml: 2, textDecoration: 'none', '&amp;:hover': { textDecoration: 'underline' } }}&gt;Skills&lt;/Link&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Link href="#experience" color="inherit" sx={{ ml: 2, textDecoration: 'none', '&amp;:hover': { textDecoration: 'underline' } }}&gt;Experience&lt;/Link&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Link href="#projects" color="inherit" sx={{ ml: 2, textDecoration: 'none', '&amp;:hover': { textDecoration: 'underline' } }}&gt;Projects&lt;/Link&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Link href="#education" color="inherit" sx={{ ml: 2, textDecoration: 'none', '&amp;:hover': { textDecoration: 'underline' } }}&gt;Education&lt;/Link&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Link href="#certifications" color="inherit" sx={{ ml: 2, textDecoration: 'none', '&amp;:hover': { textDecoration: 'underline' } }}&gt;Certifications&lt;/Link&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;Link href="#achievements" color="inherit" sx={{ ml: 2, textDecoration: 'none', '&amp;:hover': { textDecoration: 'underline' } }}&gt;Achievements&lt;/Link&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/Box&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/Toolbar&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/AppBar&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;main&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>{/* Updated Section Order */}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;HeroSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;SkillsSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;LanguagesSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;ExperienceSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;ProjectsSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;EducationSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;CertificationsSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;TrainingsAttendedSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;TrainingsDeliveredSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;PublicationsSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;AchievementsSection /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/main&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;Footer /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/ThemeProvider&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">export default App;</span></p>
+</body>
+</html>
